@@ -28,6 +28,31 @@ function main() {
     console.log(sqrt(100 + 37))
     console.log(sqrt(2) + sqrt(3))
     console.log(Math.pow(sqrt(1000), 2))
+
+
+    // 使用词法作用域简化函数
+    function sqrt2(x) {
+        function is_good_enough2(guess) {
+            return Math.abs(Math.pow(guess, 2) - x) < 0.001;
+        }
+
+        function improve2(guess) {
+            return average(guess, x / guess);
+        }
+
+        function sqrt_iter2(guess) {
+            return is_good_enough2(guess)
+                ? guess
+                : sqrt_iter2(improve2(guess))
+        }
+
+        return sqrt_iter2(1)
+    }
+
+    console.log(sqrt2(9))
+    console.log(sqrt2(100 + 37))
+    console.log(sqrt2(2) + sqrt2(3))
+    console.log(Math.pow(sqrt2(1000), 2))
 }
 
 main()
