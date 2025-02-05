@@ -23,7 +23,28 @@ function main() {
     }
 
     function cbrt(x) {
-        return cbrt_iter(1, x)
+        // return cbrt_iter(1, x)
+        return cbrt2(x);
+    }
+
+    // 利用词法作用域简化
+    function cbrt2(x) {
+        function is_good_enough2(guess) {
+            return Math.abs(Math.pow(guess, 3) - x) < 0.0001;
+        }
+
+        function improve2(guess) {
+            console.log(`improve2 called: guess=${guess}`)
+            return (x / Math.pow(guess, 2) + 2 * guess) / 3;
+        }
+
+        function cbrt_iter2(guess) {
+            return is_good_enough2(guess)
+                ? guess
+                : cbrt_iter2(improve2(guess));
+        }
+
+        return cbrt_iter2(1);
     }
 
     console.log(cbrt(8))
