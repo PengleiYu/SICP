@@ -17,8 +17,7 @@
         return n === 0
             ? 1
             : is_even(n)
-                // 这里有个关于奇数n的隐藏细节：设n=2k+1，则n/2=k+0.5，(n/2)%2=0.5或1.5，所以走第二分支b*b^(n-1)
-                ? square(fast_exp(b, n / 2))
+                ? square(fast_exp(b, n / 2)) // 这里保证了n被2整除
                 : b * fast_exp(b, n - 1);
     }
 
