@@ -16,6 +16,7 @@ function main() {
         // return average(guess, x / Math.pow(guess, 2))
     }
 
+    // 立方根牛顿法没有明显的不变量
     function cbrt_iter(guess, x) {
         return is_good_enough(guess, x)
             ? guess

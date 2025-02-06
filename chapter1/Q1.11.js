@@ -15,6 +15,7 @@
 
     // 迭代形式
     // 没有重复计算
+    // 不变量：公式指定了一个序列S，设k=n-count，则a=S(k+2),b=S(k+1),c=S(k)
     function f2(n) {
         function iter(a, b, c, count) {
             // console.log(`iter(${a},${b},${c},${count}) called`)

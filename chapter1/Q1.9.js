@@ -16,6 +16,7 @@
         return a === 0 ? b : inc(plus(dec(a), b));
     }
 
+    // 迭代形式，不变量为a+b
     function plus2(a, b) {
         console.log(`plus2() called: a=${a},b=${b}`)
         return a === 0 ? b : plus2(dec(a), inc(b));

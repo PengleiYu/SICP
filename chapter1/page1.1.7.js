@@ -6,6 +6,7 @@ function main() {
         return sqrt_iter(1, x)
     }
 
+    // 迭代形式：不变量为 guess * (x/guess) = x
     function sqrt_iter(guess, x) {
         return is_good_enough(guess, x)
             ? guess

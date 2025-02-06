@@ -11,6 +11,7 @@
 
     // 改为线性迭代
     function fib2(n) {
+        // 迭代函数的不变量为：定义k=n-count,则a=fib(k+1),b=fib(k);
         function fib_iter(a, b, count) {
             return count === 0
                 ? b
