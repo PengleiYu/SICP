@@ -41,7 +41,7 @@
         return exp === 0
             ? 1
             : is_even(exp)
-                // TODO 这里的折半逻辑不是很明白
+                // 重点：这里利用了公式 ab%m=(a%m)(b%m)%m
                 ? square(exp_mod(base, exp / 2, m)) % m
                 : (base * exp_mod(base, exp - 1, m)) % m;
     }
