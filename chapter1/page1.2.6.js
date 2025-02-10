@@ -68,12 +68,19 @@
                 : false;
     }
 
+    const expects = [true, false, true, false, true, false, false,
+        true, true, true, true,
+        false, false, false,
+        false, false, false, false, false, false,
+    ];
+
+
     [3, 4, 5, 6, 7, 8, 9,
         17, 23, 97, 113,//素数
         88, 99, 111,//合数
         561, 1105, 1729, 2465, 2821, 6601,//可以欺骗费马检查的Carmichael数
-    ].forEach(value => {
+    ].forEach((value, index) => {
         let isPrime = fast_is_prime(value, 10/*灵敏度很高，10就够用了*/);
-        console.log(`费马检查方式：${value} ${isPrime ? '素数' : '合数'}`)
+        console.log(`${value}\t测试成功:${isPrime === expects[index]}\t预期: ${expects[index]}\t测试结果: ${isPrime}`)
     })
 })()
