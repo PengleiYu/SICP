@@ -12,12 +12,12 @@
     // 迭代形式
     function cont_frac(n, d, k) {
         function iter(n, d, i, result) {
-            return i > k
+            return i === 0
                 ? result
-                : iter(n, d, i + 1, n(i) / (d(i) + result))
+                : iter(n, d, i - 1, n(i) / (d(i) + result))
         }
 
-        return iter(n, d, 1, 0);
+        return iter(n, d, k, 0);
     }
 
     console.log(cont_frac(i => 1, i => 1, 11));
