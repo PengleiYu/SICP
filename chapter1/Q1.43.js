@@ -9,10 +9,8 @@
     function repeated(f, n) {
         function iter(f, i, result) {
             return i === 0
-                ? undefined
-                : i === 1
-                    ? f(result)
-                    : iter(f, i - 1, f(result));
+                ? result
+                : iter(f, i - 1, f(result));
         }
 
         return x => iter(f, n, x);
@@ -31,10 +29,8 @@
     // 使用compose简化；递归形式
     function repeated2(f, n) {
         return n === 0
-            ? x => undefined
-            : n === 1
-                ? f
-                : compose(f, repeated2(f, n - 1));
+            ? x => x
+            : compose(f, repeated2(f, n - 1));
     }
 
     (function () {
