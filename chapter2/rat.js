@@ -44,7 +44,14 @@ export function make_rat(n, d) {
     // return pair(n, d);
     // 新实现，有理数化简
     const g = gcd(n, d);
-    return pair(n / g, d / g);
+    let n2 = n / g;
+    let d2 = d / g;
+    // 确保分母始终为正
+    if (d2 < 0) {
+        n2 *= -1;
+        d2 *= -1;
+    }
+    return pair(n2, d2);
 }
 
 export function number(x) {
