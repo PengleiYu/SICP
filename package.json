@@ -1,0 +1,12 @@
+{
+  "name": "sicp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:PengleiYu/SICP.git",
+  "author": "yupenglei <yupengniaosanshi@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "sicp": "^1.1.4"
+  }
+}
