@@ -12,6 +12,16 @@ export function width(i) {
     return (higher_bound(i) - lower_bound(i)) / 2;
 }
 
+export function make_center_percent(c, p) {
+    return make_interval(c * (1 - p), c * (1 + p));
+}
+
+export function percent(i) {
+    const up = higher_bound(i);
+    const low = lower_bound(i);
+    return (up - low) / (up + low);
+}
+
 export function make_interval(lower, higher) {
     return pair(lower, higher);
 }
