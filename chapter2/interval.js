@@ -1,4 +1,4 @@
-import {display, head, math_max, math_min, pair, tail} from "sicp";
+import {display, head, math_max, math_min, pair, tail, error} from "sicp";
 
 export function make_interval(lower, higher) {
     return pair(lower, higher);
@@ -40,6 +40,9 @@ export function mul_interval(x, y) {
 }
 
 export function div_interval(x, y) {
+    if (lower_bound(y) * higher_bound(y) <= 0) {
+        error("区域不能横跨0 -- div_interval")
+    }
     // x区间乘以y区间的倒数
     return mul_interval(x,
         make_interval(
