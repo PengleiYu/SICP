@@ -32,11 +32,30 @@ export function sub_interval(x, y) {
 }
 
 export function mul_interval(x, y) {
-    const p1 = lower_bound(x) * lower_bound(y);
-    const p2 = lower_bound(x) * higher_bound(y);
-    const p3 = higher_bound(x) * lower_bound(y);
-    const p4 = higher_bound(x) * higher_bound(y);
-    return make_interval(math_min(p1, p2, p3, p4), math_max(p1, p2, p3, p4));
+    const a = lower_bound(x);
+    const b = higher_bound(x);
+    const c = lower_bound(y);
+    const d = higher_bound(y);
+
+    if (a >= 0 && c >= 0) { // x正y正
+        return make_interval(a * c, b * d);
+    } else if (b <= 0 && d <= 0) { // x负y负
+        return make_interval(b * d, a * c);
+    } else if (a >= 0 && d <= 0) { // x正y负
+        return make_interval(b * c, a * d);
+    } else if (b <= 0 && c >= 0) { // x负y正
+        return make_interval(a * d, b * c);
+    } else if (a <= 0 && b >= 0 && c >= 0) { // x横跨y正
+        return make_interval(a * d, b * d);
+    } else if (a <= 0 && b >= 0 && d <= 0) { // x横跨y负
+        return make_interval(b * c, a * c);
+    } else if (a >= 0 && c <= 0 && d >= 0) { // x正y横跨
+        return make_interval(b * c, b * d);
+    } else if (b <= 0 && c <= 0 && d >= 0) { // x负y横跨
+        return make_interval(a * d, a * c);
+    } else { // x横跨y横跨
+        return make_interval(math_min(a * d, b * c), math_max(a * c, b * d));
+    }
 }
 
 export function div_interval(x, y) {
