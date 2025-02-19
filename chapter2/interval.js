@@ -1,5 +1,17 @@
 import {display, head, math_max, math_min, pair, tail, error} from "sicp";
 
+export function make_center_width(c, w) {
+    return make_interval(c - w, c + w);
+}
+
+export function center(i) {
+    return (lower_bound(i) + higher_bound(i)) / 2;
+}
+
+export function width(i) {
+    return (higher_bound(i) - lower_bound(i)) / 2;
+}
+
 export function make_interval(lower, higher) {
     return pair(lower, higher);
 }
