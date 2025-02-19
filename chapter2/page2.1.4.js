@@ -4,7 +4,7 @@ import {
     display_interval,
     div_interval,
     higher_bound,
-    lower_bound, make_center_width,
+    lower_bound, make_center_percent, make_center_width,
     make_interval,
     mul_interval, sub_interval
 } from "./interval.js";
@@ -37,5 +37,32 @@ import {
         display_interval(sub_interval(interval1, interval2));
         display_interval(mul_interval(interval1, interval2));
         display_interval(div_interval(interval1, interval2));
+    })();
+
+    // 电阻并联公式的两种等价公式：1，R1R2/(R1+R2)，2，1/(1/R1+1/R2)
+    // 但两种方式计算结果并不相同
+    function par1(r1, r2) {
+        return div_interval(
+            mul_interval(r1, r2), add_interval(r1, r2)
+        );
+    }
+
+    function par2(r1, r2) {
+        const one = make_interval(1, 1);
+        return div_interval(one,
+            add_interval(
+                div_interval(one, r1), div_interval(one, r2)));
+    }
+
+    (function () {
+        display('==========================')
+        const r1 = make_interval(1, 2);
+        const r2 = make_interval(1, 2);
+        display_interval(r1);
+        display_interval(r2);
+        const result1 = par1(r1, r2);
+        const result2 = par2(r1, r2);
+        display_interval(result1);
+        display_interval(result2);
     })();
 })()
