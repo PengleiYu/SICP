@@ -76,4 +76,31 @@ import {pair, list, is_list, display_list, display, raw_display, head, tail, is_
         display_list(append(square, odds));
         display_list(append(odds, square));
     })();
+
+    // 对表的映射
+    (function () {
+        // 对列表做缩放
+        function scale_list(items, factor) {
+            return is_null(items)
+                ? null
+                : pair(head(items) * factor, scale_list(tail(items), factor));
+        }
+
+        display(scale_list(list(1, 2, 3, 4, 5), 10));
+
+
+        // 抽象出高阶函数，对每个元素应用函数
+        function map(fun, items) {
+            return is_null(items)
+                ? null
+                : pair(fun(head(items)), map(fun, tail(items)));
+        }
+
+        // 使用map重新实现缩放
+        function scale_list2(items, factor) {
+            return map(x => x * factor, items);
+        }
+
+        display(scale_list2(list(1, 2, 3, 4, 5), 10));
+    })();
 })()
