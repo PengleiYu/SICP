@@ -1,4 +1,4 @@
-import {append, map, pair, head, tail, display, display_list, list, is_null, is_pair, length} from "sicp";
+import {append, display_list, head, is_null, is_pair, list, map, pair, tail} from "sicp";
 
 // 2.2.3 序列作为约定的接口
 // 各个高阶函数以序列为约定接口，进而可以随意组合
@@ -126,4 +126,92 @@ import {append, map, pair, head, tail, display, display_list, list, is_null, is_
     }
 
     display_list(product_of_squares_of_odd_elements(list(1, 2, 3, 4, 5)));
+
+    // 嵌套的映射，flatmap
+
+    // 给定一个自然数n，要求找出所有不同的有序对i和j，其中1≤j<i≤n，使得i+j是素数。
+    function flatmap(f, seq) {
+        return accumulate(append, null, map(f, seq));
+    }
+
+    (function () {
+        function is_prime(n) {
+
+            function is_even(n) {
+                return n % 2 === 0;
+            }
+
+            function square(x) {
+                return x * x;
+            }
+
+            function exp_mod(base, exp, m) {
+                return exp === 0
+                    ? 1
+                    : is_even(exp)
+                        // 重点：这里利用了公式 ab%m=(a%m)(b%m)%m
+                        ? square(exp_mod(base, exp / 2, m)) % m
+                        : (base * exp_mod(base, exp - 1, m)) % m;
+            }
+
+            function fermat_test(n) {
+                function try_it(a) {
+                    return exp_mod(a, n, n) === a;
+                }
+
+                // 随机数范围：1到n-1
+                return try_it(1 + Math.floor(Math.random() * (n - 1)))
+            }
+
+            function fast_is_prime(n, times) {
+                return times === 0
+                    ? true
+                    : fermat_test(n)
+                        // 通过费马检查则进行下一次检查
+                        ? fast_is_prime(n, times - 1)
+                        // 未通过则立即失败
+                        : false;
+            }
+
+            return fast_is_prime(n, 10)
+        }
+
+        function is_prime_sum(pair) {
+            return is_prime(head(pair) + head(tail(pair)));
+        }
+
+        function make_pair_sum(pair) {
+            return list(head(pair), head(tail(pair)), head(pair) + head(tail(pair)));
+        }
+
+        function prime_pairs(n) {
+            return map(make_pair_sum,
+                filter(is_prime_sum,
+                    flatmap(i => map(j => list(i, j),
+                            enumerate_interval(1, i - 1)),
+                        enumerate_interval(1, n))));
+        }
+
+        display_list(prime_pairs(6));
+        // display_list(flatmap(i => enumerate_interval(1, i), enumerate_interval(1, 4)));
+    })();
+
+
+    // 假设现在我们希望生成一个集合S的所有排列，也就是说，生成这一集合中元素的所有可能的排序序列
+    (function () {
+        function remove(s, x) {
+            return filter(item => item !== x, s);
+        }
+
+        function permutations(s) {
+            return is_null(s)
+                ? list(null)
+                : flatmap(x =>
+                        map(p => pair(x, p),
+                            permutations(remove(s, x))),
+                    s)
+        }
+
+        display_list(permutations(list(1, 2, 3, 4)));
+    })();
 })()
