@@ -12,7 +12,7 @@ import {map, list, display_list, accumulate, pair, head, tail, is_null, is_pair}
         function iter(result, rest) {
             return is_null(rest)
                 ? result
-                : iter(tail(rest), op(result, head(rest)));
+                : iter(op(result, head(rest)), tail(rest));
         }
 
         return iter(init, sequence);
