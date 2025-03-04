@@ -51,15 +51,14 @@ import {accumulate, append, display_list, filter, head, length, list, list_ref, 
 
             return k === 0
                 ? list(empty_board)
-                : filter(positions => {
-                        return is_safe(k, positions);
-                    },
-                    flatmap(rest_of_queens => {
-                            return map(new_row =>
+                : filter(positions => is_safe(k, positions),
+                    flatmap(
+                        rest_of_queens =>
+                            map(
+                                new_row =>
                                     adjoin_position(new_row, k, rest_of_queens),
-                                enumerate_interval(1, board_size));
-                        },
-                        queen_cols(k - 1)))
+                                enumerate_interval(1, board_size)),
+                        queen_cols(k - 1)));
         }
 
         return queen_cols(board_size);
@@ -72,7 +71,9 @@ import {accumulate, append, display_list, filter, head, length, list, list_ref, 
         const expects = [1, 0, 0, 2, 10, 4, 40, 92,];
         for (let i = 0; i < expects.length; i++) {
             display_list(`queens(${i + 1}) expect_len=${expects[i]} result_len=`)
+            let start = Date.now();
             display_list(length(queens(i + 1)));
+            console.log(`cost ${Date.now() - start}`);
         }
     })();
 })()
