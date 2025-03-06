@@ -1,4 +1,4 @@
-import {display_list, error, head, is_number, is_pair, is_string, list, tail} from "sicp";
+import {error, head, is_number, is_pair, is_string, list, tail, math_exp} from "sicp";
 
 function deriv(exp, variable) {
     return is_number(exp)
@@ -20,7 +20,18 @@ function deriv(exp, variable) {
                             deriv(multiplier(exp), variable),
                         ),
                     )
-                    : error(exp, 'unknown expression type -- deriv');
+                    : is_exp(exp)
+                        ? make_product(
+                            make_product(
+                                exponent(exp), make_exp(
+                                    base(exp), make_sum(
+                                        exponent(exp),
+                                        -1),
+                                ),
+                            ),
+                            deriv(base(exp), variable),
+                        )
+                        : error(exp, 'unknown expression type -- deriv');
 }
 
 
@@ -78,10 +89,47 @@ function make_product(m1, m2) {
                     : list('*', m1, m2);
 }
 
+function is_exp(e) {
+    return is_pair(e) && head(e) === '**' && is_number(exponent(e));
+}
+
+function make_exp(base, exponent) {
+    return is_number(base) && is_number(exponent)
+        ? math_exp(base, exponent)
+        : is_number(exponent) && number_equal(exponent, 0)
+            ? 1
+            : is_number(exponent) && number_equal(exponent, 1)
+                ? base
+                : list('**', base, exponent);
+}
+
+function base(e) {
+    return head(tail(e));
+}
+
+function exponent(e) {
+    return head(tail(tail(e)));
+}
+
 function number_equal(exp, num) {
     return is_number(exp) && exp === num;
 }
 
 export {
     deriv,
+    is_variable,
+    is_same_variable,
+    is_sum,
+    addend,
+    augend,
+    make_sum,
+    is_product,
+    multiplier,
+    multiplicand,
+    make_product,
+    is_exp,
+    make_exp,
+    base,
+    exponent,
+    number_equal,
 }
