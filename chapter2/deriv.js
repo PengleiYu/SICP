@@ -1,4 +1,18 @@
-import {error, head, is_number, is_pair, is_string, list, tail, math_exp} from "sicp";
+import {
+    display_list,
+    error,
+    head,
+    is_list,
+    is_null,
+    is_number,
+    is_pair,
+    is_string,
+    list,
+    math_exp,
+    tail,
+    length,
+    pair
+} from "sicp";
 
 function deriv(exp, variable) {
     return is_number(exp)
@@ -51,8 +65,13 @@ function addend(e) {
     return head(tail(e));
 }
 
+//可以处理list(+,1,2,3,4,5)的形式，不影响和的底层表示
+//make_sum返回的结果还是嵌套的list(+,1,list(+,2,3))
 function augend(e) {
-    return head(tail(tail(e)));
+    const rest = tail(tail(e));
+    return length(rest) === 1
+        ? head(rest)
+        : pair('+', rest);
 }
 
 function make_sum(a1, a2) {
@@ -73,8 +92,12 @@ function multiplier(e) {
     return head(tail(e));
 }
 
+// 可以处理list(*,1,2,3,4,5)的形式
 function multiplicand(e) {
-    return head(tail(tail(e)));
+    const rest = tail(tail(e));
+    return length(rest) === 1
+        ? head(rest)
+        : pair('*', rest);
 }
 
 function make_product(m1, m2) {
