@@ -44,12 +44,11 @@ function is_same_variable(v1, v2) {
 }
 
 function is_sum(e) {
-    return is_pair(e) && head(tail(e)) === '+'
+    return is_pair(e) && head(e) === '+'
 }
 
 function addend(e) {
-    // return head(tail(e));
-    return head(e);
+    return head(tail(e));
 }
 
 function augend(e) {
@@ -63,17 +62,15 @@ function make_sum(a1, a2) {
             ? a1
             : is_number(a1) && is_number(a2)
                 ? a1 + a2
-                : list(a1, '+', a2);
+                : list('+', a1, a2);
 }
 
 function is_product(e) {
-    // return head(e) === '*';
-    return head(tail(e)) === '*';
+    return head(e) === '*';
 }
 
 function multiplier(e) {
-    // return head(tail(e));
-    return head(e);
+    return head(tail(e));
 }
 
 function multiplicand(e) {
@@ -89,11 +86,11 @@ function make_product(m1, m2) {
                 ? m1
                 : is_number(m1) && is_number(m2)
                     ? m1 * m2
-                    : list(m1, '*', m2);
+                    : list('*', m1, m2);
 }
 
 function is_exp(e) {
-    return is_pair(e) && head(tail(e)) === '**' && is_number(exponent(e));
+    return is_pair(e) && head(e) === '**' && is_number(exponent(e));
 }
 
 function make_exp(base, exponent) {
@@ -103,11 +100,11 @@ function make_exp(base, exponent) {
             ? 1
             : is_number(exponent) && number_equal(exponent, 1)
                 ? base
-                : list(base, '**', exponent);
+                : list('**', base, exponent);
 }
 
 function base(e) {
-    return head(e);
+    return head(tail(e));
 }
 
 function exponent(e) {
