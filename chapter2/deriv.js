@@ -1,4 +1,4 @@
-import {error, head, is_number, is_pair, is_string, list, tail, math_exp, member, is_null, append, length} from "sicp";
+import {error, head, is_number, is_pair, is_string, list, tail, math_exp} from "sicp";
 
 function deriv(exp, variable) {
     return is_number(exp)
@@ -44,25 +44,16 @@ function is_same_variable(v1, v2) {
 }
 
 function is_sum(e) {
-    // 存在+号就是加法表达式
-    return is_pair(e) && !is_null(member("+", e));
+    return is_pair(e) && head(tail(e)) === '+'
 }
 
 function addend(e) {
-    // 找到+号，返回前面的部分
-    return head(tail(e)) === '+'
-        ? head(e)
-        : append(list(head(e), head(tail(e))), list(addend(tail(tail(e)))));
+    // return head(tail(e));
+    return head(e);
 }
 
 function augend(e) {
-    // 找到+号，返回后面的部分
-    let rest = tail(tail(e));
-    return head(tail(e)) === "+"
-        ? length(rest) === 1 // 表剩余部分只有一个元素，则返回该元素
-            ? head(rest)
-            : rest
-        : augend(rest);
+    return head(tail(tail(e)));
 }
 
 function make_sum(a1, a2) {
@@ -76,25 +67,17 @@ function make_sum(a1, a2) {
 }
 
 function is_product(e) {
-    // 没有*号且有*号就是乘法表达式
-    return is_pair(e) && is_null(member("+", e)) && !is_null(member("*", e));
+    // return head(e) === '*';
+    return head(tail(e)) === '*';
 }
 
 function multiplier(e) {
-    // 找到*号，返回前面的部分
-    return head(tail(e)) === '*'
-        ? head(e)
-        : append(list(head(e), head(tail(e))), list(addend(tail(tail(e)))));
+    // return head(tail(e));
+    return head(e);
 }
 
 function multiplicand(e) {
-    // 找到*号，返回后面的部分
-    let rest = tail(tail(e));
-    return head(tail(e)) === "*"
-        ? length(rest) === 1 // 表剩余部分只有一个元素，则返回该元素
-            ? head(rest)
-            : rest
-        : augend(rest);
+    return head(tail(tail(e)));
 }
 
 function make_product(m1, m2) {
@@ -109,7 +92,6 @@ function make_product(m1, m2) {
                     : list(m1, '*', m2);
 }
 
-// 幂运算也可以按类似加法乘法的思路处理，这里不做了
 function is_exp(e) {
     return is_pair(e) && head(tail(e)) === '**' && is_number(exponent(e));
 }
