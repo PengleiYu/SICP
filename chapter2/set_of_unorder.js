@@ -1,4 +1,5 @@
 import {display_list, error, head, is_number, is_pair, is_string, list, tail, equal, is_null, pair} from "sicp";
+
 function is_element_of_set(x, set) {
     return is_null(set)
         ? false
@@ -21,8 +22,19 @@ function intersection_set(set1, set2) {
             : intersection_set(tail(set1), set2);
 }
 
+function union_set(set1, set2) {
+    return is_null(set1)
+        ? set2
+        : is_null(set2)
+            ? set1
+            : !is_element_of_set(head(set1), set2)
+                ? pair(head(set1), union_set(tail(set1), set2))
+                : union_set(tail(set1), set2);
+}
+
 export {
     is_element_of_set,
     adjoin_set,
     intersection_set,
+    union_set,
 };
