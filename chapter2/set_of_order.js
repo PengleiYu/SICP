@@ -31,8 +31,21 @@ function adjoin_set(x, set) {
                 : pair(head(set), adjoin_set(x, tail(set)));
 }
 
+function union_set(set1, set2) {
+    return is_null(set1)
+        ? set2
+        : is_null(set2)
+            ? set1
+            : head(set1) === head(set2)
+                ? pair(head(set1), union_set(tail(set1), tail(set2)))
+                : head(set1) < head(set2)
+                    ? pair(head(set1), union_set(tail(set1), set2))
+                    : pair(head(set2), union_set(set1, tail(set2)));
+}
+
 export {
     is_element_of_set,
     intersection_set,
     adjoin_set,
+    union_set,
 }
