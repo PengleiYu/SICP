@@ -21,7 +21,18 @@ function intersection_set(set1, set2) {
                 : intersection_set(set1, tail(set2));
 }
 
+function adjoin_set(x, set) {
+    return is_null(set)
+        ? pair(x, null)
+        : x === head(set)
+            ? set
+            : x < head(set)
+                ? pair(x, set)
+                : pair(head(set), adjoin_set(x, tail(set)));
+}
+
 export {
     is_element_of_set,
     intersection_set,
+    adjoin_set,
 }
