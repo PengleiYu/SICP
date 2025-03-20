@@ -37,9 +37,16 @@ function adjoin_set(x, set) {
                 ? make_tree(entry(set), adjoin_set(x, left_branch(set)), right_branch(set))
                 : make_tree(entry(set), left_branch(set), adjoin_set(x, right_branch(set)));
 }
+function make_leaf(value) {
+    return make_tree(value, null, null);
+}
 
 export {
     is_element_of_set,
-    make_tree,
     adjoin_set,
+    make_tree,
+    entry,
+    left_branch,
+    right_branch,
+    make_leaf,
 }
