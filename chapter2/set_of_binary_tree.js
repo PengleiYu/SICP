@@ -96,6 +96,16 @@ function intersection_set(set1, set2) {
                 tree_to_list(set2)));
 }
 
+function lookup(x, set) {
+    return is_null(set)
+        ? false
+        : x === entry(set)
+            ? true
+            : x < entry(set)
+                ? lookup(x, left_branch(set))
+                : lookup(x, right_branch(set));
+}
+
 function make_leaf(value) {
     return make_tree(value, null, null);
 }
@@ -112,4 +122,5 @@ export {
     make_leaf,
     tree_to_list,
     list_to_tree,
+    lookup,
 }
