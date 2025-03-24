@@ -1,4 +1,4 @@
-import {head, is_null, length, list, math_floor, pair, tail, append, error, display_list, member} from "sicp";
+import {append, error, head, is_null, list, member, pair, tail} from "sicp";
 
 function make_leaf(symbol, weight) {
     return list("leaf", symbol, weight);
@@ -64,23 +64,22 @@ function make_leaf_set(pairs) {
 }
 
 // 将pair列表转换为huffman树
-function create_huffman(pairs) {
-    function impl(set) {
-        return is_null(set)
-            ? null
-            : is_null(tail(set))
-                ? head(set)
-                : impl(adjoin_set(
-                    make_code_tree(
-                        head(set),
-                        head(tail(set))
-                    ),
-                    tail(tail(set))
-                ));
-    }
+function generate_huffman_tree(pairs) {
+    return successive_merge(make_leaf_set(pairs));
+}
 
-    const leafSet = make_leaf_set(pairs);
-    return impl(leafSet);
+function successive_merge(leaf_set) {
+    return is_null(leaf_set)
+        ? null
+        : is_null(tail(leaf_set))
+            ? head(leaf_set)
+            : successive_merge(adjoin_set(
+                make_code_tree(
+                    head(leaf_set),
+                    head(tail(leaf_set))
+                ),
+                tail(tail(leaf_set))
+            ));
 }
 
 function decode(bits, tree) {
@@ -126,7 +125,7 @@ function encode_symbol(symbol, tree) {
 export {
     make_leaf,
     make_code_tree,
-    create_huffman,
+    generate_huffman_tree,
     decode,
     encode,
 }
