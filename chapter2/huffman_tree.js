@@ -88,7 +88,7 @@ function decode(bits, tree) {
         if (is_null(bits)) return null;
         let next_branch = choose_branch(head(bits), current_branch);
         return is_leaf(next_branch)
-            ? list(symbol_leaf(next_branch))
+            ? pair(symbol_leaf(next_branch), decode_1(tail(bits), tree))
             : decode_1(tail(bits), next_branch);
     }
 
@@ -104,5 +104,8 @@ function choose_branch(bit, branch) {
 }
 
 export {
+    make_leaf,
+    make_code_tree,
     create_huffman,
+    decode,
 }
