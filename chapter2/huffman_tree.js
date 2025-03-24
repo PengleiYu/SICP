@@ -1,4 +1,4 @@
-import {head, is_null, length, list, math_floor, pair, tail, append, error, display_list} from "sicp";
+import {head, is_null, length, list, math_floor, pair, tail, append, error, display_list, member} from "sicp";
 
 function make_leaf(symbol, weight) {
     return list("leaf", symbol, weight);
@@ -103,9 +103,30 @@ function choose_branch(bit, branch) {
             : error(bit, "bad bit -- choose_branch");
 }
 
+function encode(message, tree) {
+    return is_null(message)
+        ? null
+        : append(
+            encode_symbol(head(message), tree),
+            encode(tail(message), tree));
+}
+
+function encode_symbol(symbol, tree) {
+    return is_null(symbol)
+        ? null
+        : is_leaf(tree)
+            ? null // 叶子节点终止即可，0和1在父节点已经给出了
+            : member(symbol, symbols(left_branch(tree)))
+                ? pair(0, encode_symbol(symbol, left_branch(tree)))
+                : member(symbol, symbols(right_branch(tree)))
+                    ? pair(1, encode_symbol(symbol, right_branch(tree)))
+                    : error(symbol, "bad symbol -- encode_symbol");
+}
+
 export {
     make_leaf,
     make_code_tree,
     create_huffman,
     decode,
+    encode,
 }
