@@ -1,15 +1,6 @@
-import {error, head, is_list, is_number, is_pair, is_string, list, math_exp, pair, tail} from "sicp";
-import {make_table} from "../chapter3/table2.js";
+import {head, is_number, is_string, list, math_exp, tail} from "sicp";
+import {get, put} from "./data_directed_utils.js";
 
-const table = make_table();
-
-function put(op, type, item) {
-    return table('insert')(op, type, item);
-}
-
-function get(op, type) {
-    return table('lookup')(op, type);
-}
 
 const OP_DERIV = "deriv";
 

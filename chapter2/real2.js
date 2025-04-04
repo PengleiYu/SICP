@@ -1,19 +1,5 @@
-import {
-    error,
-    is_pair,
-    head,
-    pair,
-    list,
-    tail,
-    math_cos,
-    math_sin,
-    math_atan2,
-    math_sqrt,
-    map,
-    is_undefined,
-    apply_in_underlying_javascript
-} from 'sicp'
-import {make_table} from "../chapter3/table2.js";
+import {head, list, math_atan2, math_cos, math_sin, math_sqrt, pair, tail} from 'sicp'
+import {apply_generic, attach_tag, get, put} from "./data_directed_utils.js";
 
 function square(a) {
     return a * a;
@@ -22,31 +8,6 @@ function square(a) {
 const TAG_RECTANGULAR = 'rectangular';
 const TAG_POLAR = 'polar';
 
-// 0.0 标签系统
-function attach_tag(type_tag, contents) {
-    return pair(type_tag, contents);
-}
-
-function type_tag(datum) {
-    return is_pair(datum)
-        ? head(datum)
-        : error(datum, "Bad tagged datum -- type-tag");
-}
-
-function contents(datum) {
-    return is_pair(datum)
-        ? tail(datum)
-        : error(datum, "Bad tagged datum -- contents");
-}
-
-// 0.1 注册和查询操作
-function put(op, type, item) {
-    return table('insert')(op, type, item);
-}
-
-function get(op, type) {
-    return table('lookup')(op, type);
-}
 
 // 1,直角坐标表示
 function install_rectangular_package() {
@@ -127,13 +88,6 @@ function install_polar_package() {
     return 'done';
 }
 
-function apply_generic(op, args) {
-    const type_tags = map(type_tag, args);
-    const fun = get(op, type_tags);
-    return !is_undefined(fun)
-        ? apply_in_underlying_javascript(fun, map(contents, args))
-        : error(list(op, type_tags), "no method for these types -- apply_generic");
-}
 
 function real_part(z) {
     return apply_generic('real_part', list(z));
@@ -161,7 +115,6 @@ function make_from_mag_ang(r, a) {
 }
 
 // 3,安装包
-const table = make_table();
 install_rectangular_package();
 install_polar_package();
 

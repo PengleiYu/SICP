@@ -1,6 +1,5 @@
-import {display_list, error, head, is_number, is_pair, is_string, list, tail} from "sicp";
+import {display_list, list} from "sicp";
 import {deriv} from "./deriv2.js";
-import {make_exp, make_product} from "./deriv.js";
 
 // 将求导函数改写成数据导向的风格
 (function () {

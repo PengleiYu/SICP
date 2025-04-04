@@ -1,4 +1,4 @@
-import {equal, head, is_null, is_undefined, list, pair, set_tail, tail, error} from "sicp";
+import {display_list, equal, head, is_null, is_undefined, list, pair, set_tail, tail, error} from "sicp";
 import {assoc} from "./table.js";
 
 
