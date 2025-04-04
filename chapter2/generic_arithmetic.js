@@ -1,7 +1,7 @@
 import {apply_in_underlying_javascript, error, head, is_pair, is_undefined, list, map, pair, tail} from 'sicp'
 import {add_rat, div_rat, make_rat, mul_rat, sub_rat,} from "./rat.js";
 import {angle, imag_part, magnitude, make_from_mag_ang, make_from_real_imag, real_part} from "./real2.js";
-import {apply_generic, attach_tag, get, put} from "./data_directed_utils.js";
+import {apply_generic, attach_tag, get, put, TYPE_TAG_JAVASCRIPT_NUMBER} from "./data_directed_utils.js";
 
 // 通用型算术运算
 function add(x, y) {
@@ -27,7 +27,6 @@ const OP_DIV = 'div';
 const OP_MAKE = "make";
 
 // 3，常规数
-const TYPE_TAG_JAVASCRIPT_NUMBER = 'javascript_number';
 
 function install_javascript_number_package() {
     // 系统接口
