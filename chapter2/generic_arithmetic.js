@@ -1,5 +1,5 @@
 import {apply_in_underlying_javascript, error, head, is_pair, is_undefined, list, map, pair, tail} from 'sicp'
-import {add_rat, div_rat, equal_rat, make_rat, mul_rat, sub_rat,} from "./rat.js";
+import {add_rat, div_rat, equal_rat, make_rat, mul_rat, number, sub_rat,} from "./rat.js";
 import {angle, imag_part, magnitude, make_from_mag_ang, make_from_real_imag, real_part} from "./real2.js";
 import {apply_generic, attach_tag, get, put, TYPE_TAG_JAVASCRIPT_NUMBER} from "./data_directed_utils.js";
 
@@ -25,7 +25,9 @@ const OP_SUB = 'sub';
 const OP_MUL = 'mul';
 const OP_DIV = 'div';
 const OP_MAKE = "make";
-const OP_EQUAL = "==";
+const OP_EQUAL = "===";
+const OP_EQUAL_0 = "===0";
+
 
 // 3，常规数
 
@@ -40,6 +42,7 @@ function install_javascript_number_package() {
     put(OP_MUL, list(TYPE_TAG_JAVASCRIPT_NUMBER, TYPE_TAG_JAVASCRIPT_NUMBER), (x, y) => tag(x * y));
     put(OP_DIV, list(TYPE_TAG_JAVASCRIPT_NUMBER, TYPE_TAG_JAVASCRIPT_NUMBER), (x, y) => tag(x / y));
     put(OP_EQUAL, list(TYPE_TAG_JAVASCRIPT_NUMBER, TYPE_TAG_JAVASCRIPT_NUMBER), (x, y) => x === y);
+    put(OP_EQUAL_0, list(TYPE_TAG_JAVASCRIPT_NUMBER), (x) => x === 0);
     put(OP_MAKE, TYPE_TAG_JAVASCRIPT_NUMBER, (x) => tag(x));
     return 'done';
 }
@@ -65,6 +68,7 @@ function install_rational_package() {
     put(OP_MUL, list(TYPE_TAG_RATIONAL, TYPE_TAG_RATIONAL), (x, y) => tag(mul_rat(x, y)));
     put(OP_DIV, list(TYPE_TAG_RATIONAL, TYPE_TAG_RATIONAL), (x, y) => tag(div_rat(x, y)));
     put(OP_EQUAL, list(TYPE_TAG_RATIONAL, TYPE_TAG_RATIONAL), equal_rat);
+    put(OP_EQUAL_0, list(TYPE_TAG_RATIONAL), (x) => number(x) === 0);
     put(OP_MAKE, TYPE_TAG_RATIONAL, (x, y) => tag(make_rat(x, y)));
     return 'done';
 }
@@ -119,6 +123,7 @@ function install_complex_package() {
     put(OP_DIV, list(TYPE_TAG_COMPLEX, TYPE_TAG_COMPLEX), (z1, z2) => tag(div_complex(z1, z2)));
     put(OP_EQUAL, list(TYPE_TAG_COMPLEX, TYPE_TAG_COMPLEX),
         (z1, z2) => real_part(z1) === real_part(z2) && imag_part(z1) === imag_part(z2));
+    put(OP_EQUAL_0, list(TYPE_TAG_COMPLEX), (z) => magnitude(z) === 0);
     put(OP_MAKE_FROM_REAL_IMAG, TYPE_TAG_COMPLEX, (x, y) => tag(make_from_real_imag(x, y)));
     put(OP_MAKE_FROM_MAG_ANG, TYPE_TAG_COMPLEX, (r, a) => tag(make_from_mag_ang(r, a)));
     put("magnitude", list(TYPE_TAG_COMPLEX), magnitude);
@@ -142,6 +147,10 @@ function is_equal(x, y) {
     return apply_generic(OP_EQUAL, list(x, y));
 }
 
+function is_equal_to_zero(x) {
+    return apply_generic(OP_EQUAL_0, list(x));
+}
+
 export {
     add,
     sub,
@@ -156,4 +165,5 @@ export {
     magnitude,
     angle,
     is_equal,
+    is_equal_to_zero,
 }
