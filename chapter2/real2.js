@@ -1,4 +1,4 @@
-import {head, list, math_atan2, math_cos, math_sin, math_sqrt, pair, tail} from 'sicp'
+import {display_list, head, list, math_atan2, math_cos, math_sin, math_sqrt, pair, tail} from 'sicp'
 import {apply_generic, attach_tag, get, put} from "./data_directed_utils.js";
 
 function square(a) {

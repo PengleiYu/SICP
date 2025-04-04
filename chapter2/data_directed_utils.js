@@ -1,4 +1,15 @@
-import {apply_in_underlying_javascript, error, head, is_pair, is_undefined, list, map, pair, tail} from 'sicp'
+import {
+    display_list,
+    apply_in_underlying_javascript,
+    error,
+    head,
+    is_pair,
+    is_undefined,
+    list,
+    map,
+    pair,
+    tail
+} from 'sicp'
 import {make_table} from "../chapter3/table2.js";
 
 // 1，标签系统

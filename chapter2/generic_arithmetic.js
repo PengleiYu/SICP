@@ -19,6 +19,7 @@ function mul(x, y) {
 function div(x, y) {
     return apply_generic(OP_DIV, list(x, y));
 }
+
 const OP_ADD = 'add';
 const OP_SUB = 'sub';
 const OP_MUL = 'mul';
@@ -116,6 +117,10 @@ function install_complex_package() {
     put(OP_DIV, list(TYPE_TAG_COMPLEX, TYPE_TAG_COMPLEX), (z1, z2) => tag(div_complex(z1, z2)));
     put(OP_MAKE_FROM_REAL_IMAG, TYPE_TAG_COMPLEX, (x, y) => tag(make_from_real_imag(x, y)));
     put(OP_MAKE_FROM_MAG_ANG, TYPE_TAG_COMPLEX, (r, a) => tag(make_from_mag_ang(r, a)));
+    put("magnitude", list(TYPE_TAG_COMPLEX), magnitude);
+    put("angle", list(TYPE_TAG_COMPLEX), angle);
+    put("real_part", list(TYPE_TAG_COMPLEX), real_part);
+    put("imag_part", list(TYPE_TAG_COMPLEX), imag_part);
     return 'done';
 }
 
