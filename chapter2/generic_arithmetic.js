@@ -1,7 +1,15 @@
 import {apply_in_underlying_javascript, error, head, is_pair, is_undefined, list, map, pair, tail} from 'sicp'
 import {add_rat, div_rat, equal_rat, make_rat, mul_rat, number, sub_rat,} from "./rat.js";
 import {angle, imag_part, magnitude, make_from_mag_ang, make_from_real_imag, real_part} from "./real2.js";
-import {apply_generic, attach_tag, get, put, TYPE_TAG_JAVASCRIPT_NUMBER} from "./data_directed_utils.js";
+import {
+    apply_generic,
+    attach_tag,
+    contents,
+    get,
+    put,
+    put_coercion,
+    TYPE_TAG_JAVASCRIPT_NUMBER
+} from "./data_directed_utils.js";
 
 // 通用型算术运算
 function add(x, y) {
@@ -130,6 +138,12 @@ function install_complex_package() {
     put("angle", list(TYPE_TAG_COMPLEX), angle);
     put("real_part", list(TYPE_TAG_COMPLEX), real_part);
     put("imag_part", list(TYPE_TAG_COMPLEX), imag_part);
+
+    function javascript_number_to_complex(n) {
+        return make_complex_from_real_imag(contents(n), 0);
+    }
+    put_coercion(TYPE_TAG_JAVASCRIPT_NUMBER, TYPE_TAG_COMPLEX, javascript_number_to_complex);
+
     return 'done';
 }
 

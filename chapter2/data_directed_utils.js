@@ -1,4 +1,4 @@
-import {apply_in_underlying_javascript, error, head, is_pair, is_undefined, list, map, pair, tail} from 'sicp'
+import {apply_in_underlying_javascript, error, head, is_pair, is_undefined, list, map, pair, tail, length} from 'sicp'
 import {make_table} from "../chapter3/table2.js";
 
 const TYPE_TAG_JAVASCRIPT_NUMBER = 'javascript_number';
@@ -44,9 +44,40 @@ function get(op, type) {
 function apply_generic(op, args) {
     const type_tags = map(type_tag, args);
     const fun = get(op, type_tags);
-    return !is_undefined(fun)
-        ? apply_in_underlying_javascript(fun, map(contents, args))
-        : error(list(op, type_tags), "no method for these types -- apply_generic");
+    if (!is_undefined(fun)) {
+        return apply_in_underlying_javascript(fun, map(contents, args));
+    }
+    // 两个参数情况，尝试做类型转换
+    if (length(args) === 2) {
+        const type1 = head(type_tags);
+        const type2 = head(tail(type_tags));
+        const arg1 = head(args);
+        const arg2 = head(tail(args));
+
+        const t1_to_t2 = get_coercion(type1, type2);
+        console.log('t1_to_t2', t1_to_t2);
+        if (!is_undefined(t1_to_t2)) {
+            return apply_generic(op, list(t1_to_t2(arg1), arg2));
+        }
+        const t2_to_t1 = get_coercion(type2, type1);
+        console.log('t2_to_t1', t2_to_t1);
+        if (!is_undefined(t2_to_t1)) {
+            return apply_generic(op, list(arg1, t2_to_t1(arg2)));
+        }
+    }
+
+    return error(list(op, type_tags), "no method for these types -- apply_generic");
+}
+
+// 强制类型转换
+const OP_COERCION = "coercion";
+
+function put_coercion(type1, type2, func) {
+    put(OP_COERCION, list(type1, type2), func);
+}
+
+function get_coercion(type1, type2) {
+    return get(OP_COERCION, list(type1, type2));
 }
 
 export {
@@ -57,4 +88,6 @@ export {
     get,
     put,
     TYPE_TAG_JAVASCRIPT_NUMBER,
+    put_coercion,
+    get_coercion,
 }
